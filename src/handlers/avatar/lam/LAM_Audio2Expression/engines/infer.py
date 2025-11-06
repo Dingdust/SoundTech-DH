@@ -48,14 +48,14 @@ class InferBase:
             log_file=os.path.join(cfg.save_path, "infer.log"),
             file_mode="a" if cfg.resume else "w",
         )
-        self.logger.info("=> Loading config ...")
+        # self.logger.info("=> Loading config ...")
         self.cfg = cfg
         self.verbose = verbose
         if self.verbose:
             self.logger.info(f"Save path: {cfg.save_path}")
             self.logger.info(f"Config:\n{cfg.pretty_text}")
         if model is None:
-            self.logger.info("=> Building model ...")
+            # self.logger.info("=> Building model ...")
             self.model = self.build_model()
         else:
             self.model = model
@@ -63,14 +63,14 @@ class InferBase:
     def build_model(self):
         model = build_model(self.cfg.model)
         n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
-        self.logger.info(f"Num params: {n_parameters}")
+        # self.logger.info(f"Num params: {n_parameters}")
         model = create_ddp_model(
             model.cuda(),
             broadcast_buffers=False,
             find_unused_parameters=self.cfg.find_unused_parameters,
         )
         if os.path.isfile(self.cfg.weight):
-            self.logger.info(f"Loading weight at: {self.cfg.weight}")
+            # self.logger.info(f"Loading weight at: {self.cfg.weight}")
             checkpoint = torch.load(self.cfg.weight)
             weight = OrderedDict()
             for key, value in checkpoint["state_dict"].items():
@@ -82,11 +82,11 @@ class InferBase:
                         key = "module." + key  # xxx.xxx -> module.xxx.xxx
                 weight[key] = value
             model.load_state_dict(weight, strict=True)
-            self.logger.info(
-                "=> Loaded weight '{}'".format(
-                    self.cfg.weight
-                )
-            )
+            # self.logger.info(
+            #     "=> Loaded weight '{}'".format(
+            #         self.cfg.weight
+            #     )
+            # )
         else:
             raise RuntimeError("=> No checkpoint found at '{}'".format(self.cfg.weight))
         return model

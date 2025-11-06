@@ -3,7 +3,7 @@ serverPort = 7000
 auth.token = "C32"
 
 [[proxies]]
-name = "Dingdust-RTX-5080"
+name = "Dingdust-RTX-5080-443"
 type = "tcp"
 localIP = "127.0.0.1"
 localPort = 443
