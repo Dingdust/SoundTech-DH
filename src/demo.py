@@ -1,34 +1,17 @@
-import gradio as gr
 import os
 import argparse
-import sys
-from pathlib import Path
-
-
-_orig_read_text = Path.read_text
-def _read_text_utf8(self, encoding=None, errors=None):
-    if encoding is None:
-        encoding = 'utf-8'
-    return _orig_read_text(self, encoding=encoding, errors=errors)
-Path.read_text = _read_text_utf8
+import gradio as gr
 
 import gradio
 import uvicorn
 from loguru import logger
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
 
 from chat_engine.chat_engine import ChatEngine
 from engine_utils.directory_info import DirectoryInfo
 from service.service_utils.logger_utils import config_loggers
 from service.service_utils.ssl_helpers import create_ssl_context
 from service.service_utils.service_config_loader import load_configs
-
-
-project_dir = DirectoryInfo.get_project_dir()
-if project_dir not in sys.path:
-    sys.path.insert(0, project_dir)
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -37,14 +20,6 @@ def parse_args():
     parser.add_argument("--config", type=str, default="config/chat_with_lam.yaml", help="config file to use")
     parser.add_argument("--env", type=str, default="default", help="environment to use in config file")
     return parser.parse_args()
-
-import torch
-_original_torch_load = torch.load
-def patched_torch_load(*args, **kwargs):
-    if 'weights_only' not in kwargs or kwargs['weights_only'] != True:
-        kwargs['weights_only'] = False
-    return _original_torch_load(*args, **kwargs)
-torch.load = patched_torch_load
 
 class OpenAvatarChatWebServer(uvicorn.Server):
 

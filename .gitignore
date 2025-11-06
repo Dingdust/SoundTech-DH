@@ -1,4 +1,6 @@
+logs/
 .lock/
 .venv/
-logs/
 models/
+__pycache__/
+dump_talk_audio.pcm
