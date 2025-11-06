@@ -686,7 +686,7 @@ wheels = [
 [[package]]
 name = "fastrtc"
 version = "0.0.28.dev0"
-source = { path = "src/third_party/gradio_webrtc_videochat/dist/fastrtc-0.0.28.dev0-py3-none-any.whl" }
+source = { path = "src/third_party/fastrtc-0.0.28.dev0-py3-none-any.whl" }
 dependencies = [
     { name = "aioice" },
     { name = "aiortc" },

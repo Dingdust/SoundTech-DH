@@ -15,8 +15,7 @@ default:
       LamClient:
         module: client/h5_rendering_client/client_handler_lam
         asset_path: "lam_samples/barbara.zip"
-        # max time a session will last for
-        connection_ttl: 900
+        connection_ttl: 1200
         turn_config:
           urls: ["turn:124.223.89.143:3478", "turn:zjgsu.icu:3478", "turns:124.223.89.143:5349", "turns:zjgsu.icu:5349"]
           username: "admin"
@@ -32,21 +31,16 @@ default:
         enabled: True
         module: asr/sensevoice/asr_handler_sensevoice
         model_name: "models/iic/SenseVoiceSmall"
-      CosyVoice:
-        enabled: True
-        module: tts/bailian_tts/tts_handler_cosyvoice_bailian
-        voice: "longxiaocheng"
-        model_name: "cosyvoice-v1"
-        # api_key: "" # default=os.getenv("DASHSCOPE_API_KEY")
+      Edge_TTS:
+        module: tts/edgetts/tts_handler_edgetts
+        voice: "zh-CN-YunxiaoMultilingualNeural"
       LLMOpenAICompatible:
         enabled: True
         module: llm/openai_compatible/llm_handler_openai_compatible
-        model_name: "qwen3-vl-plus"
-        enable_video_input: True # ensure your llm support video input
+        model_name: "qwen3-vl:2b"
+        enable_video_input: True
         history_length: 20
         system_prompt: "请你扮演一个 AI 助手，用简短的两三句对话来回答用户的问题，并在对话内容中加入合适的标点符号，不需要讨论标点符号相关的内容"
-        api_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-        # api_url: 'http://127.0.0.1:11434/v1' # ollama
-        # api_key: "" # default=os.getenv("DASHSCOPE_API_KEY")
+        api_url: 'http://127.0.0.1:11434/v1'
       LAM_Driver:
         module: avatar/lam/avatar_handler_lam_audio2expression

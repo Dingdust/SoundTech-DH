@@ -1,5 +1,8 @@
 import torch
 from pathlib import Path
+from transformers.utils import logging as transformers_logging
+
+transformers_logging.set_verbosity_error()
 
 _orig_read_text = Path.read_text
 def _read_text_utf8(self, encoding=None, errors=None):
