@@ -6,6 +6,7 @@
     "Wav2Vec2ForCTC"
   ],
   "attention_dropout": 0.1,
+  "attn_implementation": "eager",
   "bos_token_id": 1,
   "codevector_dim": 256,
   "contrastive_logits_temperature": 0.1,
@@ -70,6 +71,7 @@
   "num_feat_extract_layers": 7,
   "num_hidden_layers": 12,
   "num_negatives": 100,
+  "output_attentions": false,
   "pad_token_id": 0,
   "proj_codevector_dim": 256,
   "transformers_version": "4.7.0.dev0",
