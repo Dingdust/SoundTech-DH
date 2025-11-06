@@ -1,11 +1,10 @@
-from chat_engine.chat_engine import ChatEngine
 import gradio as gr
 import os
 import argparse
 import sys
 from pathlib import Path
 
-# Force pathlib read_text to default to UTF-8 to avoid GBK decode errors
+
 _orig_read_text = Path.read_text
 def _read_text_utf8(self, encoding=None, errors=None):
     if encoding is None:
@@ -15,14 +14,16 @@ Path.read_text = _read_text_utf8
 
 import gradio
 import uvicorn
+from loguru import logger
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-from loguru import logger
 
+from chat_engine.chat_engine import ChatEngine
 from engine_utils.directory_info import DirectoryInfo
 from service.service_utils.logger_utils import config_loggers
-from service.service_utils.service_config_loader import load_configs
 from service.service_utils.ssl_helpers import create_ssl_context
+from service.service_utils.service_config_loader import load_configs
+
 
 project_dir = DirectoryInfo.get_project_dir()
 if project_dir not in sys.path:
@@ -56,7 +57,6 @@ class OpenAvatarChatWebServer(uvicorn.Server):
         self.chat_engine.shutdown()
         await super().shutdown(sockets)
 
-
 def setup_demo():
     app = FastAPI()
 
@@ -83,10 +83,8 @@ def main():
     args = parse_args()
     logger_config, service_config, engine_config = load_configs(args)
 
-    # 设置modelscope的默认下载地址
     if not os.path.isabs(engine_config.model_root):
-        os.environ['MODELSCOPE_CACHE'] = os.path.join(DirectoryInfo.get_project_dir(),
-                                                      engine_config.model_root.replace('models', ''))
+        os.environ['MODELSCOPE_CACHE'] = os.path.join(DirectoryInfo.get_project_dir(), engine_config.model_root.replace('models', ''))
 
     config_loggers(logger_config)
     chat_engine = ChatEngine()
@@ -99,8 +97,6 @@ def main():
     uvicorn_config = uvicorn.Config(demo_app, host=service_config.host, port=service_config.port, **ssl_context)
     server = OpenAvatarChatWebServer(chat_engine, uvicorn_config)
     server.run()
-
-    # uvicorn.run(demo_app, host=service_config.host, port=service_config.port, **ssl_context)
 
 
 if __name__ == "__main__":
