@@ -17,6 +17,10 @@ default:
         asset_path: "lam_samples/barbara.zip"
         # max time a session will last for
         connection_ttl: 900
+        turn_config:
+          urls: ["turn:124.223.89.143:3478", "turn:zjgsu.icu:3478", "turns:124.223.89.143:5349", "turns:zjgsu.icu:5349"]
+          username: "admin"
+          credential: "admin"
       SileroVad:
         module: vad/silerovad/vad_handler_silero
         speaking_threshold: 0.5
@@ -27,7 +31,7 @@ default:
       SenseVoice:
         enabled: True
         module: asr/sensevoice/asr_handler_sensevoice
-        model_name: "iic/SenseVoiceSmall"
+        model_name: "models/iic/SenseVoiceSmall"
       CosyVoice:
         enabled: True
         module: tts/bailian_tts/tts_handler_cosyvoice_bailian
