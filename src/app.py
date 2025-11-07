@@ -17,8 +17,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, help="service host address")
     parser.add_argument("--port", type=int, help="service host port")
-    parser.add_argument("--config", type=str, default="config/chat_with_lam.yaml", help="config file to use")
-    parser.add_argument("--env", type=str, default="default", help="environment to use in config file")
+    parser.add_argument("--config", type=str, default="config\chat_with_lam.yaml", help="config file to use")
     return parser.parse_args()
 
 class OpenAvatarChatWebServer(uvicorn.Server):
@@ -50,7 +49,6 @@ def setup_demo():
         with gr.Column():
             with gr.Group() as rtc_container:
                 pass
-    gradio.mount_gradio_app(app, gradio_block, "/gradio")
     return app, gradio_block, rtc_container
 
 
@@ -69,7 +67,13 @@ def main():
 
     ssl_context = create_ssl_context(args, service_config)
 
-    uvicorn_config = uvicorn.Config(demo_app, host=service_config.host, port=service_config.port, **ssl_context)
+    uvicorn_config = uvicorn.Config(
+        demo_app,
+        host=service_config.host,
+        port=service_config.port,
+        access_log=False,
+        **ssl_context,
+    )
     server = OpenAvatarChatWebServer(chat_engine, uvicorn_config)
     server.run()
 

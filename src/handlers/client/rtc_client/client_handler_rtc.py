@@ -199,7 +199,7 @@ class ClientHandlerRtc(ClientHandlerBase):
 
         frontend_path = Path(DirectoryInfo.get_src_dir() + '/handlers/client/rtc_client/frontend/dist')
         if frontend_path.exists():
-            logger.info(f"Serving frontend from {frontend_path}")
+            logger.info(f"从 {frontend_path} 提供前端服务")
             fastapi.mount('/ui', StaticFiles(directory=frontend_path), name="static")
             fastapi.add_route('/', RedirectResponse(url='/ui/index.html'))
         else:

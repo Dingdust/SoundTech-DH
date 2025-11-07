@@ -45,7 +45,7 @@ class HandlerManager:
             self.add_search_path(search_path)
         for handler_name, handler_config in engine_config.handler_configs.items():
             self.handler_configs[handler_name] = handler_config
-        logger.info(f"Use handler search path: {self.search_path}")
+
         for handler_name, raw_config in self.handler_configs.items():
             try:
                 handler_config = HandlerBaseConfigModel.model_validate(raw_config)
@@ -66,13 +66,13 @@ class HandlerManager:
                     module_input_path = handler_config.module.replace("\/", ".").replace("/", ".")
                     break
             if module_path is None:
-                logger.error(f"Handler {handler_config.module} not found in search path.")
+                logger.error(f"配置项 {handler_name} 的模块 {handler_config.module} 未在搜索路径中找到")
                 raise ValueError(f"Handler {handler_config.module} not found in search path.")
             try:
-                logger.info(f"Try to load {module_input_path}")
+                logger.info(f"加载配置项 {module_input_path}")
                 module = importlib.import_module(module_input_path)
             except Exception:
-                logger.error(f"Failed to import handler module {handler_config.module}")
+                logger.error(f"加载配置项 {handler_name} 的模块 {handler_config.module} 失败")
                 raise
             handler_class = None
             for name, obj in inspect.getmembers(module):
@@ -127,7 +127,7 @@ class HandlerManager:
             registry.base_info = base_info
             registry.handler = handler
             registry.handler_config = config
-            logger.info(f"Registered handler {name}({type(handler)}) with config: {config}")
+            logger.info(f"配置项 {name} 的配置信息如下：{config}")
 
     def load_handlers(self, engine_config: ChatEngineConfigModel,
                       app: Optional[FastAPI] = None,
@@ -141,13 +141,13 @@ class HandlerManager:
             load_start = time.monotonic()
             registry.handler.load(engine_config, registry.handler_config)
             dur_load = time.monotonic() - load_start
-            logger.info(f"Handler {registry.base_info.name} loaded in {round(dur_load * 1e3)} milliseconds")
+            logger.info(f"加载配置项 {registry.base_info.name} 耗时 {round(dur_load * 1e3)} 毫秒")
         if app is not None or ui is not None:
             for registry in client_handlers:
                 setup_start = time.monotonic()
                 registry.handler.on_setup_app(app, ui, parent_block)
                 dur_setup = time.monotonic() - setup_start
-                logger.info(f"Setup client handler {registry.base_info.name} loaded in {round(dur_setup * 1e3)} milliseconds")
+                logger.info(f"配置项 {registry.base_info.name} 耗时 {round(dur_setup * 1e3)} 毫秒")
 
     def get_enabled_handler_registries(self, order_by_priority=True):
         result = []

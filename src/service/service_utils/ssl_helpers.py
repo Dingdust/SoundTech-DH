@@ -29,9 +29,9 @@ def create_ssl_context(in_args, in_service_config: ServiceConfigData):
         logger.warning(f"Key file {ssl_key_path} not found")
         ssl_key_path = None
 
-    logger.info(f"Service will be started on {in_service_config.host}:{in_service_config.port}")
+    logger.info(f"服务将在 {in_service_config.host}:{in_service_config.port} 启动")
     if ssl_cert_path and ssl_key_path:
         out_ssl_context["ssl_certfile"] = ssl_cert_path
         out_ssl_context["ssl_keyfile"] = ssl_key_path
-        logger.info(f"SSL enabled.")
+        logger.info(f"已启用 SSL，证书文件：{ssl_cert_path}，密钥文件：{ssl_key_path}")
     return out_ssl_context

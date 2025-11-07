@@ -28,7 +28,7 @@ class RTCProvider(metaclass=SingletonMeta):
         else:
             rtc_config = None
         if rtc_config is not None:
-            logger.info(f"Parsing RTC config: {rtc_config}")
+            logger.info(f"RTC 配置项：{rtc_config}")
             turn_provider_name = rtc_config.get("turn_provider")
             turn_provider = None
             turn_provider_config = None
@@ -53,7 +53,7 @@ class RTCProvider(metaclass=SingletonMeta):
                         turn_provider = provider
                         break
             if turn_provider is not None:
-                logger.info(f"Use {turn_provider_name} as rtc turn provider.")
+                logger.info(f"使用 {turn_provider_name} 作为 RTC 转接头提供器")
                 turn_entity = turn_provider.prepare_rtc_configuration(turn_provider_config)
         if turn_entity is None:
             logger.info("No valid rtc provider configuration found, STUN/TURN will not be valid. "

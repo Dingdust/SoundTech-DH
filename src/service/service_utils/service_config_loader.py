@@ -10,7 +10,6 @@ from service.service_data_models.service_config_data import ServiceConfigData
 
 
 def load_configs(in_args):
-    os.environ["ENV_FOR_DYNACONF"] = in_args.env
     base_dir = DirectoryInfo.get_project_dir()
     if os.path.isabs(in_args.config):
         config_path = in_args.config
@@ -20,7 +19,7 @@ def load_configs(in_args):
         logger.error(f"Config file {config_path} not found!")
         exit(1)
 
-    logger.info(f"Load config with env {in_args.env} from {config_path}")
+    logger.info(f"从配置文件中加载配置：{config_path}")
     config = Dynaconf(
         settings_files=[config_path],
         environments=True,

@@ -97,7 +97,7 @@ class HandlerAvatarLAM(HandlerBase):
             ssr=handler_config.audio_sample_rate,
         )
         dur_warmup = time.monotonic() - t_start
-        logger.info(f"LAM_Audio2Expression warmup finished in {dur_warmup * 1000} milliseconds.")
+        # logger.info(f"LAM_Audio2Expression warmup finished in {dur_warmup * 1000} milliseconds.")
 
     def create_context(self, session_context: SessionContext,
                        handler_config: Optional[HandlerBaseConfigModel] = None) -> HandlerContext:

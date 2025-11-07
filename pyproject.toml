@@ -48,7 +48,7 @@ members = [
 ]
 
 [tool.uv.sources]
-fastrtc = { path = "src/third_party/gradio_webrtc_videochat/dist/fastrtc-0.0.28.dev0-py3-none-any.whl" }
+fastrtc = { path = "src/third_party/fastrtc-0.0.28.dev0-py3-none-any.whl" }
 torch = [
     { index = "pytorch-cu128" },
 ]
@@ -66,6 +66,3 @@ explicit = true
 
 [tool.uv]
 no-build-isolation-package = ["chumpy"]
-
-# [tool.uv.extra-build-dependencies]
-# chumpy = ["wheel"]
