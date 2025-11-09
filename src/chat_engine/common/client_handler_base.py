@@ -49,7 +49,7 @@ class ClientHandlerDelegate:
         self.session_delegates = {}
 
     def start_session(self, session_id: str, **kwargs) -> ClientSessionDelegate:
-        logger.info(f"Starting session {session_id}")
+        logger.info(f"会话 {session_id} 开始")
         engine = self.engine_ref()
         handler = self.client_handler_ref()
         assert engine is not None

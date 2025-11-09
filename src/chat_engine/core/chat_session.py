@@ -383,7 +383,7 @@ class ChatSession:
             handler_record.env.handler.destroy_context(handler_record.env.context)
         self.handlers.clear()
         self.session_context.cleanup()
-        logger.info("chat session stopped")
+        logger.info(f"会话 {self.session_context.session_id} 结束")
 
     def get_timestamp(self):
         return self.session_context.get_timestamp()

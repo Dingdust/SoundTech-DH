@@ -81,5 +81,5 @@ class ChatEngine(object):
         session.stop()
     
     def shutdown(self):
-        logger.info("Shutting down chat engine...")
+        logger.info("关闭中...")
         self.handler_manager.destroy()

@@ -178,6 +178,6 @@ class HandlerManager:
                 continue
             if not registry.handler_config.enabled:
                 continue
-            logger.info(f"Destroying handler {handler_name}")
+            logger.info(f"配置项 {handler_name} 销毁中")
             registry.handler.destroy()
-            logger.info(f"Handler {handler_name} destroyed")
+            logger.info(f"配置项 {handler_name} 已销毁")

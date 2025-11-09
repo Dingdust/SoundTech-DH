@@ -1,9 +1,7 @@
 import os
+import uvicorn
 import argparse
 import gradio as gr
-
-import gradio
-import uvicorn
 from loguru import logger
 from fastapi import FastAPI
 
@@ -61,14 +59,14 @@ def main():
 
     config_loggers(logger_config)
     chat_engine = ChatEngine()
-    demo_app, ui, parent_block = setup_demo()
+    app, ui, parent_block = setup_demo()
 
-    chat_engine.initialize(engine_config, app=demo_app, ui=ui, parent_block=parent_block)
+    chat_engine.initialize(engine_config, app=app, ui=ui, parent_block=parent_block)
 
     ssl_context = create_ssl_context(args, service_config)
 
     uvicorn_config = uvicorn.Config(
-        demo_app,
+        app,
         host=service_config.host,
         port=service_config.port,
         access_log=False,
